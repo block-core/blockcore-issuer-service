@@ -1,0 +1,10 @@
+{
+  "name": "blockcore-issuer-service",
+  "version": "0.0.1",
+  "description": "Very simple service for issuing verifiable credentials",
+  "scripts": {
+    "version": "node -p \"require('./package.json').version\""
+  },
+  "author": "Blockcore",
+  "license": "MIT"
+}
