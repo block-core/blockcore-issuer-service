@@ -24,7 +24,7 @@ jobs:
         echo "assets[0] - ${{ github.event.assets[0] }}"
  
     - name: Download release
-      uses: sondreb/action-release-download@master
+      uses: sondreb/action-release-download@main
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         url: ${{ github.event.release.assets_url }}
