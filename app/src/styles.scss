@@ -133,6 +133,13 @@ li {
   padding: 1em;
 }
 
+.qr-code {
+  width: 320px;
+  height: 320px;
+  border-radius: 5px;
+  margin-bottom: 1em;
+}
+
 @media screen and (max-width: 650px) {
   .content {
     flex-direction: column;

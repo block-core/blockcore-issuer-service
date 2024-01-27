@@ -9,6 +9,7 @@ import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ export class AppComponent {
   title = 'Verifiable Credential Issuer';
   credentialJwt = '';
   credentialJson = '';
+  credentialQrCode = '';
 
   identityForm = new FormGroup({
     did: new FormControl(''),
@@ -51,6 +53,7 @@ export class AppComponent {
   reset() {
     this.credentialJwt = '';
     this.credentialJson = '';
+    this.credentialQrCode = '';
   }
 
   copy(text: string) {
@@ -78,5 +81,13 @@ export class AppComponent {
 
     this.credentialJwt = result.jwt;
     this.credentialJson = JSON.stringify(result.vc, null, 2);
+
+    // this.credentialQrCode = await QRCode.toDataURL(JSON.stringify(result.vc));
+
+    // this.credentialQrCode = await QRCode.toDataURL(this.credentialJwt, {
+    //   errorCorrectionLevel: 'L',
+    //   margin: 2,
+    //   scale: 5,
+    // });
   }
 }

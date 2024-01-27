@@ -45,9 +45,11 @@ router.post("/", async (req, res) => {
     const signedVcJwt = await vc.sign({ did: jsonKey });
     const vcDoc = VerifiableCredential.parseJwt({ vcJwt: signedVcJwt });
 
+    const subject = vcDoc.vcDataModel.credentialSubject.id;
+
     const result = {
       issuer: vcDoc.vcDataModel.issuer,
-      subject: vcDoc.vcDataModel.credentialSubject.id,
+      subject: subject,
       jwt: signedVcJwt,
       vc: vcDoc,
     };
@@ -62,7 +64,11 @@ router.post("/", async (req, res) => {
 
       newDocument._id = MUUID.v4();
       newDocument.date = new Date();
-      await collection.insertOne(newDocument);
+
+      let filter = { subject: subject }; // filter by _id field
+      let update = { $set: newDocument }; // set newDocument as the new data
+
+      await collection.updateOne(filter, update, { upsert: true });
 
       console.log("Saved to database: " + vcDoc.vcDataModel.credentialSubject.id);
     } catch (err) {

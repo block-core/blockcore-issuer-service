@@ -40,7 +40,17 @@
       </div>
 
       <div *ngIf="credentialJwt">
-        <p>Here is your verifiable credential. You can copy and save it.</p>
+        <p>
+          Here is your verifiable credential. You can copy it to your clipboard and save manually.
+          Support for QR code import is coming soon.
+          <!-- You can open your mobile wallet
+          that supports credentials and import it. You can also copy to
+          clipboard and save manually. -->
+        </p>
+
+        <!-- <p>
+          <img [src]="credentialQrCode" class="qr-code" />
+        </p> -->
 
         <p>
           <button
