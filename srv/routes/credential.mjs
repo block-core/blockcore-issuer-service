@@ -11,19 +11,24 @@ const DID_KEY = process.env["DID_KEY"];
 router.get("/:schema/:id", async (req, res) => {
   let collection = await db.collection(collectionName);
 
-  let query = { 
-    subject: req.params.id, 
-    "vc.type": { $in: [req.params.schema] } 
+  let query = {
+    subject: req.params.id,
+    "vc.type": { $in: [req.params.schema] },
   };
 
   // let query = { subject: req.params.id, 'vc.type': req.params.schema };
-  console.log('QUERY:', query);
+  console.log("QUERY:", query);
 
   //   let query = { _id: ObjectId(req.params.id) };
   let result = await collection.findOne(query);
 
-  if (!result) res.status(404).send("Not found");
-  else res.send(result);
+  if (!result) {
+    res.status(404).send("Not found");
+  } else {
+    delete result._id;
+    delete result.date;
+    res.send(result);
+  }
 });
 
 // Get a single credential
@@ -34,8 +39,13 @@ router.get("/:id", async (req, res) => {
   //   let query = { _id: ObjectId(req.params.id) };
   let result = await collection.findOne(query);
 
-  if (!result) res.status(404).send("Not found");
-  else res.send(result);
+  if (!result) {
+    res.status(404).send("Not found");
+  } else {
+    delete result._id;
+    delete result.date;
+    res.send(result);
+  }
 });
 
 // Add a new document to the collection
