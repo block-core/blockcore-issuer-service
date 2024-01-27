@@ -16,9 +16,6 @@ router.get("/:schema/:id", async (req, res) => {
     "vc.type": { $in: [req.params.schema] },
   };
 
-  // let query = { subject: req.params.id, 'vc.type': req.params.schema };
-  console.log("QUERY:", query);
-
   //   let query = { _id: ObjectId(req.params.id) };
   let result = await collection.findOne(query);
 
