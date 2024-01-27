@@ -3,39 +3,29 @@ import cors from "cors";
 import compression from "cors";
 import "./loadEnvironment.mjs";
 import "express-async-errors";
-import posts from "./routes/posts.mjs";
-import collection from "./routes/collection.mjs";
-import category from "./routes/category.mjs";
-import authenticate from "./routes/authenticate.mjs";
-import user from "./routes/user.mjs";
-import profile from "./routes/profile.mjs";
-import permission from "./routes/permission.mjs";
-import registry from "./routes/registry.mjs";
 
 import credential from "./routes/credential.mjs";
-import credentials from "./routes/credentials.mjs";
-import schema from "./routes/schema.mjs";
 
 import path from "path";
 import { fileURLToPath } from "url";
 import cookie from "cookie-parser";
-import rateLimit from 'express-rate-limit';
+import rateLimit from "express-rate-limit";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 5050;
-const ADMINS = process.env["ADMIN"]?.split(",").filter((i) => i.trim());
 const PRODUCTION = process.env["NODE_ENV"] === "production";
 const KEY = process.env["JWT_KEY"];
-const rateLimitMinute = process.env['RATELIMIT'] ? Number(process.env['RATELIMIT']) : 30;
+const DID_KEY = process.env["DID_KEY"];
+const rateLimitMinute = process.env["RATELIMIT"] ? Number(process.env["RATELIMIT"]) : 30;
 const app = express();
 
 const limiter = rateLimit({
-	windowMs: 60 * 1000, // 1 minute
-	max: rateLimitMinute,
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  windowMs: 60 * 1000, // 1 minute
+  max: rateLimitMinute,
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
 // Apply the rate limiting middleware to all requests
@@ -49,11 +39,7 @@ app.use(limiter);
 app.use(express.json());
 
 app.use(function (req, res, next) {
-//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
-//   res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
   res.setHeader("Access-Control-Allow-Credentials", true);
-
   next();
 });
 
@@ -65,23 +51,9 @@ app.use(
 );
 
 app.disable("x-powered-by");
-
-// app.use("/api/authenticate", authenticate);
-// app.use("/api/permission", permission);
-// app.use("/api/project", project);
-// app.use("/api/registry", registry);
-// app.use("/api/posts", posts);
-// app.use("/api/collection", collection);
-// app.use("/api/category", category);
-// app.use("/api/user", user);
-// app.use("/api/profile", profile);
-
 app.use("/api/credential", credential);
-app.use("/api/credentials", credentials);
-app.use("/api/schema", schema);
 
-app.use("/", express.static(path.join(__dirname, "dist")));
-// app.get("/*", (req, res) => res.sendFile(path.join(__dirname)));
+app.use("/", express.static(path.join(__dirname, "dist/browser")));
 
 app.use((err, _req, res, next) => {
   res.status(500).send("Uh oh! An unexpected error occured.");

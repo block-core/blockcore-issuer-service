@@ -1,48 +1,17 @@
 import express from "express";
-import { ObjectId } from "mongodb";
 import db from "../db/conn.mjs";
 import MUUID from "uuid-mongodb";
+import { VerifiableCredential } from "@web5/credentials";
 
-const mUUID = MUUID.mode("relaxed"); // use relaxed mode
 const router = express.Router();
-const collectionName = "project";
-import { verifyAdmin } from "../services/verifyAdmin.mjs";
-import { verifyUser } from "../services/verifyUser.mjs";
-
-router.get("/", async (req, res) => {
-  if (!verifyUser(req, res)) {
-    return;
-  }
-
-  try {
-    let collection = await db.collection(collectionName);
-    let results = await collection.find({}).limit(50).toArray();
-
-    res.send(results);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-// Fetches the root categories
-router.get("/root", async (req, res) => {
-  let collection = await db.collection(collectionName);
-  let results = await collection.aggregate([{ $project: { name: 1, icon: 1, slug: 1, parent: 1, sort: 1 } }, { $sort: { sort: 1 } }, { $limit: 50 }]).toArray();
-  res.send(results);
-});
-
-// Fetches the latest posts
-router.get("/latest", async (req, res) => {
-  let collection = await db.collection(collectionName);
-  let results = await collection.aggregate([{ $project: { author: 1, title: 1, tags: 1, date: 1 } }, { $sort: { date: -1 } }, { $limit: 3 }]).toArray();
-  res.send(results);
-});
+const collectionName = "credential";
+const DID_KEY = process.env["DID_KEY"];
 
 // Get a single post
 router.get("/:id", async (req, res) => {
   let collection = await db.collection(collectionName);
 
-  let query = { _id: MUUID.from(req.params.id) };
+  let query = { subject: req.params.id };
   //   let query = { _id: ObjectId(req.params.id) };
   let result = await collection.findOne(query);
 
@@ -52,113 +21,58 @@ router.get("/:id", async (req, res) => {
 
 // Add a new document to the collection
 router.post("/", async (req, res) => {
-  if (!verifyAdmin(req, res)) {
-    return;
-  }
+  let newDocument = req.body;
+  console.log("Input:", newDocument);
+
+  let schema = newDocument.schema; // For later use when we have added support for multiple schemas
+  let subject = newDocument.did;
+  let jsonKey = JSON.parse(DID_KEY);
 
   try {
-    let collection = await db.collection(collectionName);
-    let newDocument = req.body;
+    console.log("Trying to make VC: ", subject);
 
-    // Ensure we don't have an id field. If we do, remove it.
-    delete newDocument.id;
-
-    newDocument._id = MUUID.v4();
-    newDocument.date = new Date();
-    let result = await collection.insertOne(newDocument);
-
-    // const insertedId = MUUID.from(result.insertedId).toString();
-    // console.log(`insertOne with id ${insertedId} succeeded`);
-    // result.humanId = insertedId;
-
-    res.send({ result: result, item: newDocument });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-// Add a new document to the collection
-router.put("/:id", async (req, res) => {
-  if (!verifyAdmin(req, res)) {
-    return;
-  }
-
-  try {
-    let collection = await db.collection(collectionName);
-
-    let query = { _id: MUUID.from(req.params.id) };
-    let result = await collection.findOne(query);
-
-    console.log("Searching for: ", req.params.id);
-
-    if (!result) res.status(404).send("Not found");
-
-    let updateDocument = req.body;
-
-    // Ensure we don't have an id field. If we do, remove it.
-    delete updateDocument.id;
-
-    // Ensure that users can't provide different ID in URL and within payload:
-    updateDocument._id = MUUID.from(req.params.id);
-
-    updateDocument.date = new Date();
-
-    const updateResult = await collection.updateOne(query, { $set: updateDocument });
-    console.log("Updated documents =>", updateResult);
-
-    res.send({
-      result: updateResult,
-      item: updateDocument,
+    const vc = await VerifiableCredential.create({
+      type: "WorldVoluntaryistOrganisationCredential",
+      issuer: jsonKey.did,
+      subject: subject,
+      data: {
+        signed: "The Voluntaryist Covenant",
+        version: "1.0",
+        hash: "856da8db8fec583255fa09cc19c64a93d44cba7a4d6c408282643fc581ae6c4b",
+      },
     });
-  } catch (err) {
-    console.log(err);
-  }
-});
 
-// Update the post with a new comment
-router.patch("/item/:id", async (req, res) => {
-  if (!verifyAdmin(req, res)) {
-    return;
-  }
+    const signedVcJwt = await vc.sign({ did: jsonKey });
+    const vcDoc = VerifiableCredential.parseJwt({ vcJwt: signedVcJwt });
 
-  const query = { _id: MUUID.from(req.params.id) };
-  //   const query = { _id: ObjectId(req.params.id) };
+    const result = {
+      issuer: vcDoc.vcDataModel.issuer,
+      subject: vcDoc.vcDataModel.credentialSubject.id,
+      jwt: signedVcJwt,
+      vc: vcDoc,
+    };
 
-  const updates = {
-    $push: { comments: req.body },
-  };
+    // If we can't persist, let's just ignore that.
+    try {
+      let collection = await db.collection(collectionName);
+      let newDocument = result;
 
-  let collection = await db.collection(collectionName);
-  let result = await collection.updateOne(query, updates);
+      // Ensure we don't have an id field. If we do, remove it.
+      delete newDocument.id;
 
-  res.send(result);
-});
+      newDocument._id = MUUID.v4();
+      newDocument.date = new Date();
+      await collection.insertOne(newDocument);
 
-// Delete an entry
-router.delete("/:id", async (req, res) => {
-  if (!verifyAdmin(req, res)) {
-    return;
-  }
-
-  try {
-    if (req.params.id.length > 32) {
-      const query = { _id: MUUID.from(req.params.id) };
-      //   const query = { _id: ObjectId(req.params.id) };
-
-      const collection = db.collection(collectionName);
-      let result = await collection.deleteOne(query);
-
-      res.send(result);
-    } else {
-      const query = { _id: ObjectId(req.params.id) };
-
-      const collection = db.collection(collectionName);
-      let result = await collection.deleteOne(query);
-
-      res.send(result);
+      console.log("Saved to database: " + vcDoc.vcDataModel.credentialSubject.id);
+    } catch (err) {
+      console.error(err);
     }
+
+    res.send(result);
   } catch (err) {
     console.error(err);
+    return { error: "Something bad happened. Unable to complete the process." };
   }
 });
 
