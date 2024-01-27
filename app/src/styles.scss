@@ -68,7 +68,7 @@ main {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 2em;
   // border: 1px solid red;
 }
@@ -116,6 +116,14 @@ li {
 }
 
 .credential-box {
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  word-wrap: break-word;
+  overflow-wrap: break-word; // breaks long words to prevent overflow
+  word-break: break-all; // breaks words at any character if necessary
+}
+
+.credential-view {
   width: 100%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   word-wrap: break-word;

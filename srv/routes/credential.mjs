@@ -7,7 +7,26 @@ const router = express.Router();
 const collectionName = "credential";
 const DID_KEY = process.env["DID_KEY"];
 
-// Get a single post
+// Get a single credential
+router.get("/:schema/:id", async (req, res) => {
+  let collection = await db.collection(collectionName);
+
+  let query = { 
+    subject: req.params.id, 
+    "vc.type": { $in: [req.params.schema] } 
+  };
+
+  // let query = { subject: req.params.id, 'vc.type': req.params.schema };
+  console.log('QUERY:', query);
+
+  //   let query = { _id: ObjectId(req.params.id) };
+  let result = await collection.findOne(query);
+
+  if (!result) res.status(404).send("Not found");
+  else res.send(result);
+});
+
+// Get a single credential
 router.get("/:id", async (req, res) => {
   let collection = await db.collection(collectionName);
 
@@ -45,13 +64,11 @@ router.post("/", async (req, res) => {
     const signedVcJwt = await vc.sign({ did: jsonKey });
     const vcDoc = VerifiableCredential.parseJwt({ vcJwt: signedVcJwt });
 
-    const subject = vcDoc.vcDataModel.credentialSubject.id;
-
     const result = {
       issuer: vcDoc.vcDataModel.issuer,
       subject: subject,
       jwt: signedVcJwt,
-      vc: vcDoc,
+      vc: vcDoc.vcDataModel,
     };
 
     // If we can't persist, let's just ignore that.
@@ -59,10 +76,10 @@ router.post("/", async (req, res) => {
       let collection = await db.collection(collectionName);
       let newDocument = result;
 
-      // Ensure we don't have an id field. If we do, remove it.
+      // We must delete the MongoDB ID, since we are upserting with a different key.
       delete newDocument.id;
 
-      newDocument._id = MUUID.v4();
+      // newDocument._id = MUUID.v4();
       newDocument.date = new Date();
 
       let filter = { subject: subject }; // filter by _id field

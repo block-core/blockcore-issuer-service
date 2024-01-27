@@ -55,6 +55,11 @@ app.use("/api/credential", credential);
 
 app.use("/", express.static(path.join(__dirname, "dist/browser")));
 
+// All other GET requests not handled before will return our Angular app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist/browser/index.html"));
+});
+
 app.use((err, _req, res, next) => {
   res.status(500).send("Uh oh! An unexpected error occured.");
 });

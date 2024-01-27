@@ -30,64 +30,64 @@ import * as QRCode from 'qrcode';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'Verifiable Credential Issuer';
-  credentialJwt = '';
-  credentialJson = '';
-  credentialQrCode = '';
+  // title = 'Verifiable Credential Issuer';
+  // credentialJwt = '';
+  // credentialJson = '';
+  // credentialQrCode = '';
 
-  identityForm = new FormGroup({
-    did: new FormControl(''),
-    schema: new FormControl('voluntaryist'),
-    tags: new FormControl(
-      'World Voluntaryist Organisation, WVO, The Voluntaryist Covenant'
-    ),
-  });
+  // identityForm = new FormGroup({
+  //   did: new FormControl(''),
+  //   schema: new FormControl('voluntaryist'),
+  //   tags: new FormControl(
+  //     'World Voluntaryist Organisation, WVO, The Voluntaryist Covenant'
+  //   ),
+  // });
 
-  async fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
-    init = init || {};
-    init.credentials = 'include';
+  // async fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  //   init = init || {};
+  //   init.credentials = 'include';
 
-    return fetch(input, init);
-  }
+  //   return fetch(input, init);
+  // }
 
-  reset() {
-    this.credentialJwt = '';
-    this.credentialJson = '';
-    this.credentialQrCode = '';
-  }
+  // reset() {
+  //   this.credentialJwt = '';
+  //   this.credentialJson = '';
+  //   this.credentialQrCode = '';
+  // }
 
-  copy(text: string) {
-    navigator.clipboard.writeText(text);
-  }
+  // copy(text: string) {
+  //   navigator.clipboard.writeText(text);
+  // }
 
-  async issueCredential() {
-    const response = await this.fetch(`/api/credential`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        did: this.identityForm.controls.did.value,
-        schema: 'TheVoluntaryistCovenant',
-      }),
-    });
+  // async issueCredential() {
+  //   const response = await this.fetch(`/api/credential`, {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       did: this.identityForm.controls.did.value,
+  //       schema: 'TheVoluntaryistCovenant',
+  //     }),
+  //   });
 
-    if (response.status >= 400) {
-      throw new Error(response.statusText);
-    }
+  //   if (response.status >= 400) {
+  //     throw new Error(response.statusText);
+  //   }
 
-    const result = await response.json();
+  //   const result = await response.json();
 
-    this.credentialJwt = result.jwt;
-    this.credentialJson = JSON.stringify(result.vc, null, 2);
+  //   this.credentialJwt = result.jwt;
+  //   this.credentialJson = JSON.stringify(result.vc, null, 2);
 
-    // this.credentialQrCode = await QRCode.toDataURL(JSON.stringify(result.vc));
+  //   // this.credentialQrCode = await QRCode.toDataURL(JSON.stringify(result.vc));
 
-    // this.credentialQrCode = await QRCode.toDataURL(this.credentialJwt, {
-    //   errorCorrectionLevel: 'L',
-    //   margin: 2,
-    //   scale: 5,
-    // });
-  }
+  //   // this.credentialQrCode = await QRCode.toDataURL(this.credentialJwt, {
+  //   //   errorCorrectionLevel: 'L',
+  //   //   margin: 2,
+  //   //   scale: 5,
+  //   // });
+  // }
 }
