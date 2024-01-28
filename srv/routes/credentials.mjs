@@ -9,18 +9,45 @@ const DID_KEY = process.env["DID_KEY"];
 
 // Get a list of 50 posts
 router.get("/", async (req, res) => {
+  // TODO: Add paging support.
   try {
     let collection = await db.collection(collectionName);
     let results = await collection.find({}).limit(50).toArray();
 
+    // TODO: Remove _id and date from results.
     res.send(results);
   } catch (err) {
     console.log(err);
   }
 });
 
-// Get a single credential
-router.get("/:schema/:id", async (req, res) => {
+// Get a all credentials based upon the DID or unique credential ID.
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  let query = {};
+
+  if (id.startsWith("did:")) {
+    query = { subject: req.params.id };
+  } else {
+    query = { "vc.id": req.params.id };
+  }
+
+  // This currently query on the DID itself and not the unique identifier for the credential.
+  let collection = await db.collection(collectionName);
+
+  //   let query = { _id: ObjectId(req.params.id) };
+  let result = await collection.find(query).limit(50).toArray();
+
+  if (!result) {
+    res.status(404).send("Not found");
+  } else {
+    // TODO: Remove _id and date from results.
+    res.send(result);
+  }
+});
+
+// Get a single credential for a specific DID and schema.
+router.get("/:id/:schema/", async (req, res) => {
   let collection = await db.collection(collectionName);
 
   let query = {
@@ -28,23 +55,6 @@ router.get("/:schema/:id", async (req, res) => {
     "vc.type": { $in: [req.params.schema] },
   };
 
-  //   let query = { _id: ObjectId(req.params.id) };
-  let result = await collection.findOne(query);
-
-  if (!result) {
-    res.status(404).send("Not found");
-  } else {
-    delete result._id;
-    delete result.date;
-    res.send(result);
-  }
-});
-
-// Get a single credential
-router.get("/:id", async (req, res) => {
-  let collection = await db.collection(collectionName);
-
-  let query = { subject: req.params.id };
   //   let query = { _id: ObjectId(req.params.id) };
   let result = await collection.findOne(query);
 
