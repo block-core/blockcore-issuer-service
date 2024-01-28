@@ -51,7 +51,6 @@ app.use(
 );
 
 app.disable("x-powered-by");
-app.use("/api/credential", credentials); // Backwards compatible, remove in future
 app.use("/api/credentials", credentials);
 
 app.use("/", express.static(path.join(__dirname, "dist/browser")));

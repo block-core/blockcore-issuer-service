@@ -66,7 +66,7 @@ export class HomeComponent {
   }
 
   async issueCredential() {
-    const response = await this.fetch(`/api/credentials`, {
+    const response = await this.fetch(`/api/credentials/issue`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -87,7 +87,7 @@ export class HomeComponent {
     // this.credentialJwt = result.jwt;
     // this.credentialJson = JSON.stringify(result.vc, null, 2);
 
-    this.router.navigate(['/credential', this.identityForm.controls.schema.value, this.identityForm.controls.did.value]);
+    this.router.navigate(['/credentials', this.identityForm.controls.did.value, this.identityForm.controls.schema.value]);
 
     // this.credentialQrCode = await QRCode.toDataURL(JSON.stringify(result.vc));
 
