@@ -7,6 +7,18 @@ const router = express.Router();
 const collectionName = "credential";
 const DID_KEY = process.env["DID_KEY"];
 
+// Get a list of 50 posts
+router.get("/", async (req, res) => {
+  try {
+    let collection = await db.collection(collectionName);
+    let results = await collection.find({}).limit(50).toArray();
+
+    res.send(results);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // Get a single credential
 router.get("/:schema/:id", async (req, res) => {
   let collection = await db.collection(collectionName);
@@ -46,7 +58,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Add a new document to the collection
-router.post("/", async (req, res) => {
+router.post("/issue", async (req, res) => {
   let newDocument = req.body;
   console.log("Input:", newDocument);
 

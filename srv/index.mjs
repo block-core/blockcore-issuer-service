@@ -4,7 +4,7 @@ import compression from "cors";
 import "./loadEnvironment.mjs";
 import "express-async-errors";
 
-import credential from "./routes/credential.mjs";
+import credentials from "./routes/credentials.mjs";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -51,7 +51,8 @@ app.use(
 );
 
 app.disable("x-powered-by");
-app.use("/api/credential", credential);
+app.use("/api/credential", credentials); // Backwards compatible, remove in future
+app.use("/api/credentials", credentials);
 
 app.use("/", express.static(path.join(__dirname, "dist/browser")));
 

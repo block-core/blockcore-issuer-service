@@ -61,7 +61,7 @@ export class AppComponent {
   // }
 
   // async issueCredential() {
-  //   const response = await this.fetch(`/api/credential`, {
+  //   const response = await this.fetch(`/api/credentials`, {
   //     method: 'POST',
   //     headers: {
   //       Accept: 'application/json',

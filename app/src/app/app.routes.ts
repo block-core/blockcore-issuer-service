@@ -5,5 +5,6 @@ import { HomeComponent } from './home.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' }, // Redirect to '/home' route when the path is ''
   //   { path: 'home', component: HomeComponent },
-  { path: 'credential/:schema/:id', component: CredentialComponent },
+  { path: 'credential/:schema/:id', component: CredentialComponent }, // Backwards compatible
+  { path: 'credentials/:schema/:id', component: CredentialComponent },
 ];

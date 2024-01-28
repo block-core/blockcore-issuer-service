@@ -95,7 +95,7 @@ export class CredentialComponent {
 
   async registry(schema: string, id: string) {
     // TODO: Expand the API to support getting different credentials for same user.
-    const response = await this.fetch(`/api/credential/${schema}/${id}`);
+    const response = await this.fetch(`/api/credentials/${schema}/${id}`);
 
     if (response.status >= 400) {
       throw new Error(response.statusText);
