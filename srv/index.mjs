@@ -5,6 +5,7 @@ import "./loadEnvironment.mjs";
 import "express-async-errors";
 
 import credentials from "./routes/credentials.mjs";
+import stats from "./routes/stats.mjs";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -52,6 +53,7 @@ app.use(
 
 app.disable("x-powered-by");
 app.use("/api/credentials", credentials);
+app.use("/api/stats", stats);
 
 app.use("/", express.static(path.join(__dirname, "dist/browser")));
 
