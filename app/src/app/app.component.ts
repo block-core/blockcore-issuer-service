@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,9 +7,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import * as QRCode from 'qrcode';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-root',
@@ -25,11 +30,29 @@ import * as QRCode from 'qrcode';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatSelectModule,
+    HttpClientModule,
+    TranslateModule,
+    MatMenuModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  constructor(
+    public translate: TranslateService,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    translate.addLangs(['en', 'no', 'ru']);
+    translate.setDefaultLang('en');
+
+    const browserLang = translate.getBrowserLang()!;
+    translate.use(browserLang.match(/en|no|ru/) ? browserLang : 'en');
+  }
+
+  onLanguageChanged(lang: string) {
+    this.translate.use(lang);
+  }
+
   // title = 'Verifiable Credential Issuer';
   // credentialJwt = '';
   // credentialJson = '';

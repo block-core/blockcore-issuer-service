@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import * as QRCode from 'qrcode';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ import * as QRCode from 'qrcode';
     ReactiveFormsModule,
     MatSelectModule,
     RouterModule,
+    TranslateModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

@@ -1,1 +1,20 @@
 <router-outlet />
+
+<div class="options">
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    aria-label="Example icon-button with a menu"
+  >
+    <mat-icon>translate</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button
+      mat-menu-item
+      *ngFor="let lang of translate.getLangs()"
+      (click)="onLanguageChanged(lang)"
+    >
+      {{ lang | translate }}
+    </button>
+  </mat-menu>
+</div>

@@ -16,7 +16,7 @@
           <br />
 
           <div *ngIf="identityForm.controls.did.value">
-            <mat-form-field>
+            <mat-form-field appearance="outline">
               <mat-label>Choose an credential</mat-label>
               <mat-select formControlName="schema">
                 <mat-option value="WorldVoluntaryistOrganisationCredential"
@@ -88,7 +88,7 @@
       </div>
     </div>
     <div class="right-side" *ngIf="!credentialJwt">
-      <h2>What is a decentralized identifier (DID)?</h2>
+      <h2>{{ 'App.Headline' | translate }}</h2>
       <p>
         A unique identity that belongs to you. There are many providers of DIDs
         and you are free to choose anyone you want.

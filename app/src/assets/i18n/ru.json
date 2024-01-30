@@ -1,0 +1,18 @@
+{
+  "en": "English",
+  "no": "Norsk",
+  "fr": "French",
+  "el": "Greek",
+  "fa": "Persian",
+  "ar": "Arabic",
+  "he": "Hebrew",
+  "ru": "Русский",
+  "App": {
+    "Version": "Версия",
+    "Headline": "Что такое децентрализованный идентификатор (DID)"
+  },
+  "Credential": {
+    "To": "To",
+    "From": "From"
+  }
+}

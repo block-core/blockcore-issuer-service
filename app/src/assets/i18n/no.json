@@ -1,0 +1,18 @@
+{
+  "en": "English",
+  "no": "Norsk",
+  "fr": "French",
+  "el": "Greek",
+  "fa": "Persian",
+  "ar": "Arabic",
+  "he": "Hebrew",
+  "ru": "Русский",
+  "App": {
+    "Version": "Versjon",
+    "Headline": "Hva er en desentralisert identifier (DID)"
+  },
+  "Credential": {
+    "To": "Til",
+    "From": "Fra"
+  }
+}
