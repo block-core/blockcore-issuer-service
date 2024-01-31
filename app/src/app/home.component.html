@@ -2,10 +2,10 @@
   <div class="content">
     <div class="left-side">
       <div *ngIf="!credentialJwt">
-        <p>Fill out your decentralized identifier (DID) to get started.</p>
+        <p> {{ 'Home.FillOutYourDID' | translate }}</p>
         <form [formGroup]="identityForm" class="identity-form">
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Identifier (DID)</mat-label>
+            <mat-label>{{ 'Home.Identifier' | translate }}</mat-label>
             <input
               class="full-width"
               matInput
@@ -17,10 +17,10 @@
 
           <div *ngIf="identityForm.controls.did.value">
             <mat-form-field appearance="outline">
-              <mat-label>Choose an credential</mat-label>
+              <mat-label>{{ 'Home.ChooseACredential' | translate }} </mat-label>
               <mat-select formControlName="schema">
                 <mat-option value="WorldVoluntaryistOrganisationCredential"
-                  >The Voluntaryist Covenant</mat-option
+                  >{{ 'Home.TheVoluntaryistCovenant' | translate }}</mat-option
                 >
               </mat-select>
             </mat-form-field>
@@ -32,7 +32,7 @@
                 color="primary"
                 (click)="issueCredential()"
               >
-                Issue Credential
+              {{ 'Home.IssueCredential' | translate }}
               </button>
             </p>
           </div>
@@ -41,8 +41,7 @@
 
       <div *ngIf="credentialJwt">
         <p>
-          Here is your verifiable credential. You can copy it to your clipboard and save manually.
-          Support for QR code import is coming soon.
+          {{ 'Home.Subtitle' | translate }}
           <!-- You can open your mobile wallet
           that supports credentials and import it. You can also copy to
           clipboard and save manually. -->
@@ -60,7 +59,7 @@
             color="primary"
             (click)="copy(this.credentialJwt)"
           >
-            Copy to clipboard
+          {{ 'Credential.CopyToClipboard' | translate }}
           </button>
           <button
             class="action-button"
@@ -68,7 +67,7 @@
             mat-raised-button
             (click)="reset()"
           >
-            Create a new credential
+           {{'Credential.CreateAnewCredential' | translate }}
           </button>
         </p>
 
@@ -89,11 +88,9 @@
     </div>
     <div class="right-side" *ngIf="!credentialJwt">
       <h2>{{ 'App.Headline' | translate }}</h2>
-      <p>
-        A unique identity that belongs to you. There are many providers of DIDs
-        and you are free to choose anyone you want.
+      <p> {{'Home.Title' | translate }}
       </p>
-      <p>You can get a DID with wallets such as:</p>
+      <p> {{ 'Home.YouCanGetaDIDwithWalletsSuchAs' | translate }}</p>
       <ul>
         <li><a href="https://www.verida.io/">Verida Wallet</a></li>
         <li>
@@ -103,8 +100,7 @@
         </li>
       </ul>
       <p>
-        If you have a wallet like MetaMask (Ethereum) or Stellar, you can fill
-        out your identity like these examples:
+        {{ 'Home.MetaMaskStellar' | translate }} 
       </p>
 
       <p class="wrap faded">
@@ -114,7 +110,7 @@
       </p>
 
       <p class="faded">
-        Want to learn more about Web5? Check out this
+        {{ 'Home.WantToLearnMore' | translate }}
         <a href="https://web5.sondreb.com/">awesome-web5</a> list resources.
       </p>
     </div>

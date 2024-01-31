@@ -12,7 +12,24 @@
     "Headline": "What is a decentralized identifier (DID)"
   },
   "Credential": {
+    "Signed": "Signed",
     "To": "To",
-    "From": "From"
+    "From": "From",
+    "CopyToClipboard": "Copy to clipboard",
+    "CreateAnewCredential": "Create a new credential",
+    "CredentialJSON": "Credential (JSON)",
+    "CredentialJWT": "Credential (JWT)"
+  },
+  "Home": {
+    "FillOutYourDID": "Fill out your decentralized identifier (DID) to get started.",
+    "Identifier": "Identifier (DID)",
+    "ChooseACredential": "Choose a credential",
+    "TheVoluntaryistCovenant": "The Voluntaryist Covenant",
+    "IssueCredential": "Issue Credential",
+    "Subtitle": "Here is your verifiable credential. You can copy it to your clipboard and save manually. Support for QR code import is coming soon.",
+    "Title": "A unique identity that belongs to you. There are many providers of DIDs and you are free to choose anyone you want.",
+    "YouCanGetaDIDwithWalletsSuchAs": "You can get a DID with wallets such as:",
+    "MetaMaskStellar": "If you have a wallet like MetaMask (Ethereum) or Stellar, you can fill out your identity like these examples:",
+    "WantToLearnMore": "Want to learn more about Web5? Check out this"    
   }
 }

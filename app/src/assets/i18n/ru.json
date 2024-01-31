@@ -12,7 +12,24 @@
     "Headline": "Что такое децентрализованный идентификатор (DID)"
   },
   "Credential": {
+    "Signed": "Signed",
     "To": "To",
-    "From": "From"
+    "From": "From",
+    "CopyToClipboard": "Скопировано в буфер обмена",
+    "CreateAnewCredential": "Создать новую учётную запись",
+    "CredentialJSON": "Credential (JSON)",
+    "CredentialJWT": "Credential (JWT)"
+  },
+  "Home": {
+    "FillOutYourDID": "Заполните свой децентрализованный идентификатор (DID), чтобы начать.",
+    "Identifier": "Идентификатор (DID)",
+    "ChooseACredential": "Выберите учётную запись",
+    "TheVoluntaryistCovenant": "Соглашение о волюнтаризме",
+    "IssueCredential": "Issue Credential",
+    "Subtitle": "Здесь ваши верифицированные учетные данные. Вы можете скопировать их в буфер обмена и сохранить вручную. Скоро появится поддержка импорта с помощью QR-кода.",
+    "Title": "Уникальный идентификатор, который принадлежит вам. Существует множество поставщиков DID, и вы вольны выбрать кого угодно.",
+    "YouCanGetaDIDwithWalletsSuchAs": "Вы можете получить DID с помощью таких кошельков, как:",
+    "MetaMaskStellar": "Если у вас есть кошелек типа MetaMask (Ethereum) или Stellar, вы можете заполнить свою идентификационную информацию, как показано в этих примерах:",
+    "WantToLearnMore": "Хотите узнать больше о Web5? Посмотрите это"    
   }
 }
