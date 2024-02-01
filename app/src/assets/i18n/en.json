@@ -30,6 +30,7 @@
     "Title": "A unique identity that belongs to you. There are many providers of DIDs and you are free to choose anyone you want.",
     "YouCanGetaDIDwithWalletsSuchAs": "You can get a DID with wallets such as:",
     "MetaMaskStellar": "If you have a wallet like MetaMask (Ethereum) or Stellar, you can fill out your identity like these examples:",
-    "WantToLearnMore": "Want to learn more about Web5? Check out this"    
+    "WantToLearnMore": "Want to learn more about Web5? Check out this",
+    "ListResourses": "list resourses"  
   }
 }
