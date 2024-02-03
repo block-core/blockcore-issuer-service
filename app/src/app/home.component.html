@@ -2,10 +2,10 @@
   <div class="content">
     <div class="left-side">
       <div *ngIf="!credentialJwt">
-        <p> {{ 'Home.FillOutYourDID' | translate }}</p>
+        <p>{{ "Home.FillOutYourDID" | translate }}</p>
         <form [formGroup]="identityForm" class="identity-form">
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>{{ 'Home.Identifier' | translate }}</mat-label>
+            <mat-label>{{ "Home.Identifier" | translate }}</mat-label>
             <input
               class="full-width"
               matInput
@@ -15,16 +15,19 @@
             <mat-error *ngIf="identityForm.controls.did.hasError('colonCount')">
               Identifier must contain at least two colons.
             </mat-error>
+            <mat-error *ngIf="identityForm.controls.did.hasError('noSpaces')">
+              Identifier must not contain spaces.
+            </mat-error>
           </mat-form-field>
           <br />
 
           <div *ngIf="identityForm.controls.did.value">
             <mat-form-field appearance="outline">
-              <mat-label>{{ 'Home.ChooseACredential' | translate }} </mat-label>
+              <mat-label>{{ "Home.ChooseACredential" | translate }} </mat-label>
               <mat-select formControlName="schema">
-                <mat-option value="WorldVoluntaryistOrganisationCredential"
-                  >{{ 'Home.TheVoluntaryistCovenant' | translate }}</mat-option
-                >
+                <mat-option value="WorldVoluntaryistOrganisationCredential">{{
+                  "Home.TheVoluntaryistCovenant" | translate
+                }}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -35,7 +38,7 @@
                 color="primary"
                 (click)="issueCredential()"
               >
-              {{ 'Home.IssueCredential' | translate }}
+                {{ "Home.IssueCredential" | translate }}
               </button>
             </p>
           </div>
@@ -44,7 +47,7 @@
 
       <div *ngIf="credentialJwt">
         <p>
-          {{ 'Home.Subtitle' | translate }}
+          {{ "Home.Subtitle" | translate }}
           <!-- You can open your mobile wallet
           that supports credentials and import it. You can also copy to
           clipboard and save manually. -->
@@ -62,7 +65,7 @@
             color="primary"
             (click)="copy(this.credentialJwt)"
           >
-          {{ 'Credential.CopyToClipboard' | translate }}
+            {{ "Credential.CopyToClipboard" | translate }}
           </button>
           <button
             class="action-button"
@@ -70,7 +73,7 @@
             mat-raised-button
             (click)="reset()"
           >
-           {{'Credential.CreateAnewCredential' | translate }}
+            {{ "Credential.CreateAnewCredential" | translate }}
           </button>
         </p>
 
@@ -90,10 +93,9 @@
       </div>
     </div>
     <div class="right-side" *ngIf="!credentialJwt">
-      <h2>{{ 'App.Headline' | translate }}</h2>
-      <p> {{'Home.Title' | translate }}
-      </p>
-      <p> {{ 'Home.YouCanGetaDIDwithWalletsSuchAs' | translate }}</p>
+      <h2>{{ "App.Headline" | translate }}</h2>
+      <p>{{ "Home.Title" | translate }}</p>
+      <p>{{ "Home.YouCanGetaDIDwithWalletsSuchAs" | translate }}</p>
       <ul>
         <li><a href="https://www.verida.io/">Verida Wallet</a></li>
         <li>
@@ -103,18 +105,22 @@
         </li>
       </ul>
       <p>
-        {{ 'Home.MetaMaskStellar' | translate }} 
+        {{ "Home.MetaMaskStellar" | translate }}
       </p>
 
       <p class="wrap faded">
         did:ethr:0x17960Abb12a3C...<br />
-        did:stllr:GDMBM7P2ZVD64D...<br>
-        <a routerLink="/credentials/did:dht:1c5gde6u5oyhk8fiytupnwzfju49b56zwwoensaqenzxri96z1mo/WorldVoluntaryistOrganisationCredential">did:dht:1c5gde6u5oyhk8fiytu... (example)</a>
+        did:stllr:GDMBM7P2ZVD64D...<br />
+        <a
+          routerLink="/credentials/did:dht:1c5gde6u5oyhk8fiytupnwzfju49b56zwwoensaqenzxri96z1mo/WorldVoluntaryistOrganisationCredential"
+          >did:dht:1c5gde6u5oyhk8fiytu... (example)</a
+        >
       </p>
 
       <p class="faded">
-        {{ 'Home.WantToLearnMore' | translate }}
-        <a href="https://web5.sondreb.com/">awesome-web5</a> {{ 'Home.ListResources' | translate }}
+        {{ "Home.WantToLearnMore" | translate }}
+        <a href="https://web5.sondreb.com/">awesome-web5</a>
+        {{ "Home.ListResources" | translate }}
       </p>
     </div>
   </div>

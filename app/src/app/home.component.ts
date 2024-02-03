@@ -24,8 +24,8 @@ function colonCountValidator(
 ): ValidationErrors | null {
   const value = control.value as string;
   const colonCount = (value.match(/:/g) || []).length;
-  if (colonCount < 2) {
-    return { colonCount: true };
+  if (colonCount < 2 || /\s/.test(value)) {
+    return { colonCount: true, noSpaces: /\s/.test(value) };
   }
   return null;
 }
