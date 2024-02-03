@@ -12,6 +12,9 @@
               placeholder="The identifier that will receive a credential"
               formControlName="did"
             />
+            <mat-error *ngIf="identityForm.controls.did.hasError('colonCount')">
+              Identifier must contain at least two colons.
+            </mat-error>
           </mat-form-field>
           <br />
 

@@ -5,12 +5,30 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  AbstractControl,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import * as QRCode from 'qrcode';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+function colonCountValidator(
+  control: AbstractControl
+): ValidationErrors | null {
+  const value = control.value as string;
+  const colonCount = (value.match(/:/g) || []).length;
+  if (colonCount < 2) {
+    return { colonCount: true };
+  }
+  return null;
+}
 
 @Component({
   selector: 'app-root',
@@ -27,7 +45,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     ReactiveFormsModule,
     MatSelectModule,
     RouterModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -39,16 +57,14 @@ export class HomeComponent {
   credentialQrCode = '';
 
   identityForm = new FormGroup({
-    did: new FormControl(''),
+    did: new FormControl('', [Validators.required, colonCountValidator]),
     schema: new FormControl('WorldVoluntaryistOrganisationCredential'),
     tags: new FormControl(
       'World Voluntaryist Organisation, WVO, The Voluntaryist Covenant'
     ),
   });
 
-  constructor(private router: Router) {
-
-  }
+  constructor(private router: Router) {}
 
   async fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
     init = init || {};
@@ -89,7 +105,11 @@ export class HomeComponent {
     // this.credentialJwt = result.jwt;
     // this.credentialJson = JSON.stringify(result.vc, null, 2);
 
-    this.router.navigate(['/credentials', this.identityForm.controls.did.value, this.identityForm.controls.schema.value]);
+    this.router.navigate([
+      '/credentials',
+      this.identityForm.controls.did.value,
+      this.identityForm.controls.schema.value,
+    ]);
 
     // this.credentialQrCode = await QRCode.toDataURL(JSON.stringify(result.vc));
 

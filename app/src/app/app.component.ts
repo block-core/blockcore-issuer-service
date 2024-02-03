@@ -42,7 +42,7 @@ export class AppComponent {
     public translate: TranslateService,
     @Inject(DOCUMENT) private document: Document
   ) {
-    translate.addLangs(['en', 'no', 'ru']);
+    translate.addLangs(['en', 'ru']);
     translate.setDefaultLang('en');
 
     const browserLang = translate.getBrowserLang()!;
